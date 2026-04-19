@@ -557,12 +557,16 @@ unsigned int earcrx_get_cs_fmt(struct regmap *dmac_map, enum attend_type type)
 		}
 	} else if ((val & 0x30) == 0x20) {
 		if (layout == LO32_LPCM) {
+			pr_info("%s, AUDIO_CODING_TYPE_MULTICH_32CH_LPCM\n", __func__);
 			coding_type = AUDIO_CODING_TYPE_MULTICH_32CH_LPCM;
 		} else if (layout == LO16_LPCM) {
+			pr_info("%s, AUDIO_CODING_TYPE_MULTICH_16CH_LPCM\n", __func__);
 			coding_type = AUDIO_CODING_TYPE_MULTICH_16CH_LPCM;
 		} else if (layout == LO8_LPCM) {
+			pr_info("%s, AUDIO_CODING_TYPE_MULTICH_8CH_LPCM\n", __func__);
 			coding_type = AUDIO_CODING_TYPE_MULTICH_8CH_LPCM;
 		} else if (layout == LO2_LPCM) {
+			pr_info("%s, AUDIO_CODING_TYPE_MULTICH_2CH_LPCM\n", __func__);
 			coding_type = AUDIO_CODING_TYPE_MULTICH_2CH_LPCM;
 		} else {
 			pr_err("unknown for Multi-Ch LPCM, default as 2ch\n");
@@ -582,35 +586,45 @@ unsigned int earcrx_get_cs_fmt(struct regmap *dmac_map, enum attend_type type)
 
 			/* compressed audio  type */
 			coding_type = iec_61937_pc_to_coding_type(pc_v);
+			pr_info("%s, non-lpcm %i\n", __func__, coding_type);
 
 			if (layout == 0x7) {
 				switch (coding_type) {
 				case AUDIO_CODING_TYPE_AC3:
 					coding_type = AUDIO_CODING_TYPE_AC3_LAYOUT_B;
+					pr_info("%s, AUDIO_CODING_TYPE_AC3_LAYOUT_B\n", __func__);
 					break;
 				case AUDIO_CODING_TYPE_EAC3:
 					coding_type = AUDIO_CODING_TYPE_EAC3_LAYOUT_B;
+					pr_info("%s, AUDIO_CODING_TYPE_EAC3_LAYOUT_B\n", __func__);
 					break;
 				case AUDIO_CODING_TYPE_MLP:
 					coding_type = AUDIO_CODING_TYPE_MLP_LAYOUT_B;
+					pr_info("%s, AUDIO_CODING_TYPE_MLP_LAYOUT_B\n", __func__);
 					break;
 				case AUDIO_CODING_TYPE_DTS:
 					coding_type = AUDIO_CODING_TYPE_DTS_LAYOUT_B;
+					pr_info("%s, AUDIO_CODING_TYPE_DTS_LAYOUT_B\n", __func__);
 					break;
 				case AUDIO_CODING_TYPE_DTS_HD:
 					coding_type = AUDIO_CODING_TYPE_DTS_HD_LAYOUT_B;
+					pr_info("%s, AUDIO_CODING_TYPE_DTS_HD_LAYOUT_B\n", __func__);
 					break;
 				case AUDIO_CODING_TYPE_DTS_HD_MA:
 					coding_type = AUDIO_CODING_TYPE_DTS_HD_MA_LAYOUT_B;
+					pr_info("%s, AUDIO_CODING_TYPE_DTS_HD_MA_LAYOUT_B\n", __func__);
 					break;
 				default:
 					coding_type = AUDIO_CODING_TYPE_PAUSE;
+					pr_info("%s, AUDIO_CODING_TYPE_PAUSE\n", __func__);
 					break;
 				}
 			}
 		}
 	} else {
-		coding_type = AUDIO_CODING_TYPE_STEREO_LPCM;
+		//coding_type = AUDIO_CODING_TYPE_STEREO_LPCM;
+		pr_info("%s, fallback AUDIO_CODING_TYPE_MULTICH_8CH_LPCM val=%u layout=%u\n", __func__, val, layout);
+		coding_type = AUDIO_CODING_TYPE_MULTICH_8CH_LPCM;
 	}
 
 	return coding_type;
@@ -647,6 +661,7 @@ static int earcrx_get_cs_channels(struct regmap *dmac_map,
 		channels = 2;
 		break;
 	}
+	pr_info("%s, %i\n", __func__, channels);
 
 	return channels;
 }
@@ -664,10 +679,12 @@ unsigned int earcrx_get_cs_freq(struct regmap *dmac_map,
 	csfs = val & 0xf;
 	h_flag = !!(val & 0x80);
 	freq = iec_rate_from_csfs(csfs, h_flag);
+	pr_info("%s, freq before channel divide %i\n", __func__, freq);
 
 	/* Fix to really fs */
 	channels = earcrx_get_cs_channels(dmac_map, coding_type);
 	freq /= (channels / 2);
+	pr_info("%s, freq  after channel divide %i\n", __func__, freq);
 
 	return freq;
 }
