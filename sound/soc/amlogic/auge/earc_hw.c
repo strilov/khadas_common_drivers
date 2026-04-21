@@ -622,9 +622,9 @@ unsigned int earcrx_get_cs_fmt(struct regmap *dmac_map, enum attend_type type)
 			}
 		}
 	} else {
-		//coding_type = AUDIO_CODING_TYPE_STEREO_LPCM;
-		pr_info("%s, fallback AUDIO_CODING_TYPE_MULTICH_8CH_LPCM val=%u layout=%u\n", __func__, val, layout);
-		coding_type = AUDIO_CODING_TYPE_MULTICH_8CH_LPCM;
+		coding_type = AUDIO_CODING_TYPE_STEREO_LPCM;
+		pr_info("%s, fallback AUDIO_CODING_TYPE_STEREO_LPCM val=%u layout=%u\n", __func__, val, layout);
+		//coding_type = AUDIO_CODING_TYPE_MULTICH_8CH_LPCM;
 	}
 
 	return coding_type;
