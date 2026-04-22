@@ -130,6 +130,7 @@ void earcrx_cmdc_int_mask(struct regmap *top_map)
 void earcrx_cmdc_init(struct regmap *top_map, bool en, bool rx_dmac_sync_int,
 	bool rterm_on, bool arc_in_new)
 {
+	pr_info("%s, earcrx_cmdc_init: arc_in_new: %d\n", __func__, arc_in_new);
 	if (arc_in_new) {
 		if (rterm_on) {
 			mmio_write(top_map,

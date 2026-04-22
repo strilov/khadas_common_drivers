@@ -441,11 +441,15 @@ static void earctx_init(int earc_port, bool st)
 
 static void earcrx_init(bool st)
 {
+	dev_info(p_earc->dev,
+				 "earcrx_init called\n");
 	struct earc *p_earc = s_earc;
-
+	dev_info(p_earc->dev, "st rx_ui_flag, %d %d\n", st, p_earc->rx_ui_flag);
 	st = st && p_earc->rx_ui_flag;
 
 	if (!p_earc->rx_bootup_auto_cal) {
+		dev_info(p_earc->dev,
+				 "!rx_bootup_auto_cal\n");
 		p_earc->rx_bootup_auto_cal = true;
 		p_earc->event |= EVENT_RX_ANA_AUTO_CAL;
 		schedule_work(&p_earc->work);
