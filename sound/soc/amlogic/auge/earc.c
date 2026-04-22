@@ -441,9 +441,9 @@ static void earctx_init(int earc_port, bool st)
 
 static void earcrx_init(bool st)
 {
+	struct earc *p_earc = s_earc;
 	dev_info(p_earc->dev,
 				 "earcrx_init called\n");
-	struct earc *p_earc = s_earc;
 	dev_info(p_earc->dev, "st rx_ui_flag, %d %d\n", st, p_earc->rx_ui_flag);
 	st = st && p_earc->rx_ui_flag;
 
