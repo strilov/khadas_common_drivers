@@ -2498,11 +2498,11 @@ static void cec_hdmi_plug_handler(struct work_struct *work)
 #ifdef CONFIG_AMLOGIC_MEDIA_TVIN_HDMI
 	tmp |= (hdmirx_get_connect_info() & 0xF);
 #endif
-	CEC_INFO("[plug_handler],hpd state=%d", get_hpd_state());
-	CEC_INFO("[plug_handler],hdmirx_get_connect_info=%d", hdmirx_get_connect_info());
-	CEC_INFO("[plug_handler],tmp=%d", tmp);
-	CEC_INFO("[plug_handler],dev_type=%d", cec_dev->dev_type);
-	CEC_INFO("[plug_handler],cec_get_cur_phy_addr=%d", cec_get_cur_phy_addr());
+	CEC_INFO("[plug_handler],hpd state=%u", get_hpd_state());
+	CEC_INFO("[plug_handler],hdmirx_get_connect_info=%u", hdmirx_get_connect_info());
+	CEC_INFO("[plug_handler],tmp=%u", tmp);
+	CEC_INFO("[plug_handler],dev_type=%lu", cec_dev->dev_type);
+	CEC_INFO("[plug_handler],cec_get_cur_phy_addr=%u", cec_get_cur_phy_addr());
 	//update phy_addr when recv plug in event
 	if (cec_dev->dev_type != CEC_TV_ADDR) {
 		if ((tmp & 0x10) != 0) {
